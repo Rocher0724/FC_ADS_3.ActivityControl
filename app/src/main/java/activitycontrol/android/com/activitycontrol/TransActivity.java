@@ -14,11 +14,11 @@ public class TransActivity extends AppCompatActivity implements View.OnClickList
     EditText etValue;
     Button btnOk;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trans);
-
         tvValue = (TextView) findViewById(R.id.tvValue);
         etValue = (EditText) findViewById(R.id.etValue);
         btnOk = (Button) findViewById(R.id.btnOk);
@@ -26,6 +26,11 @@ public class TransActivity extends AppCompatActivity implements View.OnClickList
         btnOk.setOnClickListener(this);
     }
 
+
+    /** 텍스트를 입력하고 셀렉티드 버튼을 눌렀을 때 이전 화면으로 돌아가면서 적용됨.
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
 //        // 당연히 하는 인텐트 설정
@@ -50,9 +55,9 @@ public class TransActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onBackPressed() { // 뒤로가기 키를 눌렀을때 실행되게 할수도 있음.
         returnValue();
+        super.onBackPressed();
     }
 
     public void returnValue() {

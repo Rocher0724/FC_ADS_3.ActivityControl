@@ -1,6 +1,7 @@
 package activitycontrol.android.com.activitycontrol;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +17,13 @@ public class MainActivity extends AppCompatActivity {
     public final static int TWO = 2;
 
     Button mCommonBtn, mTransBtn1, mTransBtn2;
+    Button mDialBtn, mBrowseBtn, mSmsBtn;
     TextView mTrans1, mTrans2;
-    EditText mEditText;
+    EditText mEditText, mEtNum1, mEtNum2, mEtUrl;
 
     Intent intent;
+
+
 
     public MainActivity() {
         super();
@@ -33,13 +37,28 @@ public class MainActivity extends AppCompatActivity {
         mCommonBtn = (Button) findViewById(R.id.commonBtn);
         mTransBtn1 = (Button) findViewById(R.id.transBtn1);
         mTransBtn2 = (Button) findViewById(R.id.transBtn2);
+        mTransBtn2 = (Button) findViewById(R.id.transBtn2);
+        mTransBtn2 = (Button) findViewById(R.id.transBtn2);
+        mTransBtn2 = (Button) findViewById(R.id.transBtn2);
+        mDialBtn = (Button) findViewById(R.id.btnDial);
+        mSmsBtn = (Button) findViewById(R.id.btnSms);
+        mBrowseBtn = (Button) findViewById(R.id.btnBrowse);
+
+
         mEditText = (EditText) findViewById(R.id.mainEditText);
+        mEtNum1 = (EditText) findViewById(R.id.etN1);
+        mEtNum2 = (EditText) findViewById(R.id.etN2);
+        mEtUrl = (EditText) findViewById(R.id.et1);
+
         mTrans1 = (TextView) findViewById(R.id.trans1);
         mTrans2 = (TextView) findViewById(R.id.trans2);
 
         mTransBtn1.setOnClickListener(new CustomClickListener());
         mTransBtn2.setOnClickListener(new CustomClickListener());
         mCommonBtn.setOnClickListener(new CustomClickListener());
+        mSmsBtn.setOnClickListener(new CustomClickListener());
+        mDialBtn.setOnClickListener(new CustomClickListener());
+        mBrowseBtn.setOnClickListener(new CustomClickListener());
     }
 
     @Override
@@ -89,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            String value = "";
             switch (v.getId()) {
                 case R.id.commonBtn:
                     // # 액티비티로 값넘기기
@@ -100,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.transBtn1:
                     // # 호출한 액티비티로 부터 값을 돌려받을때
-                    // 1.
+                    // 1.intent의 from과 to를 설정
                     intent = new Intent(MainActivity.this, TransActivity.class);
 
                     // 2. putExtra 함수에 전달할 값 설정
@@ -123,9 +143,23 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(intent, TWO);
                     break;
 
+                // 두번째 했던 다이얼, 브라우져 , 문자보내기
+                case R.id.btnDial:
+                    value = mEtNum1.getText().toString();
+                    intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" +value));
+                    startActivity(intent);
+                    break;
+                case R.id.btnBrowse:
+                    value = mEtUrl.getText().toString();
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + value));
+                    startActivity(intent);
+                    break;
+                case R.id.btnSms:
+                    value = mEtNum2.getText().toString();
+                    intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + value));
+                    startActivity(intent);
+                    break;
             }
-            // 엑스트라에 담긴 값을 intent를 통해 전달한다.
-//            startActivity(intent); //로직을 한줄이라도 줄이기 위한 몸부림
         }
     }
 
@@ -134,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param requestCode   호출시에 호출한 액티비티에서 넘긴 구분 값
      * @param resultCode    호출된 액티비티의 상태 코드
-     * @param data          호출된 액티비티가 돌려주는 데이터
+     * @param intent        호출된 액티비티가 돌려주는 데이터
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
